@@ -11,6 +11,23 @@ dotenv.config();
 connectDB();
 const app = express();
 
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser')
+
+// app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+    credentials: true
+  }));
+app.use(express.urlencoded({ extended : true }));
+app.use(bodyParser.urlencoded({extended: false}))
+app.set("trust proxy", 1)
+
+app.use(cookieParser());
+
+
 app.use(express.json()); // to accept json data
 
 // app.get("/", (req, res) => {

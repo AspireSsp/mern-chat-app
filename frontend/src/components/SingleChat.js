@@ -47,11 +47,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
+      
       setLoading(true);
-
+      
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `http://localhost:5000/api/message/${selectedChat._id}`,
+        
         config
       );
       setMessages(data);
@@ -76,13 +77,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       try {
         const config = {
           headers: {
-            "Content-type": "application/json",
+            // "Content-type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "/api/message",
+          "http://localhost:5000/api/message",
           {
             content: newMessage,
             chatId: selectedChat,
@@ -167,6 +168,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             pb={3}
             px={2}
             w="100%"
+            H="50vh"
             fontFamily="Work sans"
             d="flex"
             justifyContent={{ base: "space-between" }}
@@ -203,9 +205,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             p={3}
             bg="#E8E8E8"
             w="100%"
-            h="100%"
+            // h="100%"
+            maxH="75vh"
             borderRadius="lg"
-            overflowY="hidden"
+            overflowY="scroll"
           >
             {loading ? (
               <Spinner

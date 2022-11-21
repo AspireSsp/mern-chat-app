@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Text ,Flex} from "@chakra-ui/layout";
 import {
   Menu,
   MenuButton,
@@ -19,7 +19,7 @@ import {
 import { Tooltip } from "@chakra-ui/tooltip";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
@@ -37,7 +37,6 @@ function SideDrawer() {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-
   const {
     setSelectedChat,
     user,
@@ -49,7 +48,7 @@ function SideDrawer() {
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const history = useHistory();
+  const history = useNavigate();
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -77,7 +76,7 @@ function SideDrawer() {
         },
       };
 
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`http://localhost:5000/api/user?search=${search}`, config);
 
       setLoading(false);
       setSearchResult(data);
@@ -100,11 +99,11 @@ function SideDrawer() {
       setLoadingChat(true);
       const config = {
         headers: {
-          "Content-type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`/api/chat`, { userId }, config);
+      
+      const { data } = await axios.post(`http://localhost:5000/api/chat`, { userId }, config);
 
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
@@ -133,6 +132,9 @@ function SideDrawer() {
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
+      <Flex>
+
+      
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
             <i className="fas fa-search"></i>
@@ -188,6 +190,7 @@ function SideDrawer() {
             </MenuList>
           </Menu>
         </div>
+        </Flex> 
       </Box>
 
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
@@ -208,6 +211,7 @@ function SideDrawer() {
               <ChatLoading />
             ) : (
               searchResult?.map((user) => (
+                console.log(user),
                 <UserListItem
                   key={user._id}
                   user={user}

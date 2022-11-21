@@ -25,7 +25,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get("/api/chat", config);
+      const { data } = await axios.get("http://localhost:5000/api/chat", config);
       setChats(data);
     } catch (error) {
       toast({
@@ -53,6 +53,7 @@ const MyChats = ({ fetchAgain }) => {
       p={3}
       bg="white"
       w={{ base: "100%", md: "31%" }}
+      maxH="89vh"
       borderRadius="lg"
       borderWidth="1px"
     >
@@ -63,6 +64,7 @@ const MyChats = ({ fetchAgain }) => {
         fontFamily="Work sans"
         d="flex"
         w="100%"
+       
         justifyContent="space-between"
         alignItems="center"
       >
@@ -83,9 +85,10 @@ const MyChats = ({ fetchAgain }) => {
         p={3}
         bg="#F8F8F8"
         w="100%"
-        h="100%"
+        maxH="75vh"
+        overflowY="auto"
         borderRadius="lg"
-        overflowY="hidden"
+        // overflowY="hidden"
       >
         {chats ? (
           <Stack overflowY="scroll">
